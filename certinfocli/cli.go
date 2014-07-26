@@ -27,7 +27,7 @@ func main() {
 		if certinfo.IsCertificate(cert) && certinfo.IsKey(key) {
 			privateKeyMatch, err := cert.(certinfo.Certificates).PrivateKeyMatches(key.(certinfo.Key))
 			if err == nil && privateKeyMatch {
-				fmt.Printf("%s (cert) === (private key) %s\n", cert.SourceFile(), key.SourceFile())
+				fmt.Printf("%s (cert) <==> (private key) %s\n", cert.SourceFile(), key.SourceFile())
 			}
 		}
 	})
