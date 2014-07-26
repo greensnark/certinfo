@@ -42,7 +42,7 @@ func PkixTypeValueString(typeValue pkix.AttributeTypeAndValue) string {
 }
 
 func PkixNameString(name *pkix.Name) string {
-	result := []string{}
+	result := make([]string, 0, len(name.Names))
 	for i := len(name.Names) - 1; i >= 0; i-- {
 		typeValue := name.Names[i]
 		result = append(result, PkixTypeValueString(typeValue))

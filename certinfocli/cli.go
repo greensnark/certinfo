@@ -6,14 +6,6 @@ import (
 	"os"
 )
 
-func booleanNot(res bool) string {
-	if res {
-		return ""
-	} else {
-		return "NOT "
-	}
-}
-
 func main() {
 	if len(os.Args) == 1 {
 		fmt.Fprintf(os.Stderr, "Usage: %s [certificate/key file] ...\n", os.Args[0])
@@ -34,11 +26,8 @@ func main() {
 	eachPermutation(objects, func(cert, key certinfo.Object) {
 		if certinfo.IsCertificate(cert) && certinfo.IsKey(key) {
 			privateKeyMatch, err := cert.(certinfo.Certificates).PrivateKeyMatches(key.(certinfo.Key))
-			if err != nil {
-				fmt.Printf("%s is private key for %s: unknown: %v\n", err)
-			} else {
-				fmt.Printf("%s is %sthe private key for %s\n", key.SourceFile(), booleanNot(privateKeyMatch),
-					cert.SourceFile())
+			if err == nil && privateKeyMatch {
+				fmt.Printf("%s (cert) === (private key) %s\n", cert.SourceFile(), key.SourceFile())
 			}
 		}
 	})
