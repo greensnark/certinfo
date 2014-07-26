@@ -114,6 +114,11 @@ func (c *CertificateInfo) PrivateKeyMatches(key Key) (bool, error) {
 	return RsaPublicKeysEqual(&rsakey.PublicKey, c.FirstCertificate().PublicKey.(*rsa.PublicKey)), nil
 }
 
+func (c *CertificateInfo) ValidityStr() string {
+	cert := c.FirstCertificate()
+	return fmt.Sprintf("%s - %s", cert.NotBefore, cert.NotAfter)
+}
+
 func (c *CertificateInfo) String() string {
 	cert := c.Certificates()[0]
 	subjectName := PkixNameString(&cert.Subject)
@@ -121,7 +126,7 @@ func (c *CertificateInfo) String() string {
 	if issuerName == subjectName {
 		issuerName = "self"
 	}
-	return fmt.Sprintf("Certificate: Subject=%s Issuer=%s Key-Size=%d", strconv.Quote(subjectName), strconv.Quote(issuerName), c.PublicKeyBitSize())
+	return fmt.Sprintf("Certificate: Subject=%s Validity=%s Issuer=%s Key-Size=%d", strconv.Quote(subjectName), c.ValidityStr(), strconv.Quote(issuerName), c.PublicKeyBitSize())
 }
 
 func (k *KeyInfo) RSAKey() *rsa.PrivateKey {
