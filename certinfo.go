@@ -28,7 +28,7 @@ func GuessFileType(file string) ObjectType {
 
 func PemBytes(bytes []byte) ([]byte, error) {
 	block, _ := pem.Decode(bytes)
-	if len(block.Bytes) == 0 {
+	if block == nil || len(block.Bytes) == 0 {
 		return nil, ErrEmptyPem
 	}
 	return block.Bytes, nil
